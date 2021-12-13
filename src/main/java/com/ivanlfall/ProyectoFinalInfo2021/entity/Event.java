@@ -1,5 +1,6 @@
 package com.ivanlfall.ProyectoFinalInfo2021.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ivanlfall.ProyectoFinalInfo2021.util.StateType;
 
 import javax.persistence.*;
@@ -73,6 +74,10 @@ public class Event {
 
     public List<Entrepreneurship> getSubscribers() {
         return subscribers;
+    }
+
+    public void addSubscriber(Entrepreneurship entrepreneurship){
+        getSubscribers().add(entrepreneurship);
     }
 
     public Double getPrize() {
