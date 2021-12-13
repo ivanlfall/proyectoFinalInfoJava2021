@@ -1,6 +1,7 @@
 package com.ivanlfall.ProyectoFinalInfo2021.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,8 +29,9 @@ public class Entrepreneurship {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Event event;
-//    @OneToMany
-//    private List<Vote> votes = new ArrayList<>();
+    @OneToMany(mappedBy = "entrepreneurship", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Vote> votes = new ArrayList<>();
 
     public Entrepreneurship() {
     }
@@ -119,6 +121,14 @@ public class Entrepreneurship {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void addVote(Vote vote) {
+        this.votes.add(vote);
     }
 
     @Override

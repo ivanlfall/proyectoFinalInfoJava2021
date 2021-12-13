@@ -1,9 +1,11 @@
 package com.ivanlfall.ProyectoFinalInfo2021.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ivanlfall.ProyectoFinalInfo2021.util.UserType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,16 +25,10 @@ public class User {
     private String country;
     private UserType userType;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vote> vote;
+    @JsonIgnore
+    private List<Vote> vote = new ArrayList<>();
 
     public User() {
-    }
-
-    public User(String name, String lastName, String email, String password) {
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
     }
 
     public Long getId() {
@@ -117,6 +113,10 @@ public class User {
 
     public List<Vote> getVote() {
         return vote;
+    }
+
+    public void addVote(Vote vote) {
+        this.vote.add(vote);
     }
 
     @Override

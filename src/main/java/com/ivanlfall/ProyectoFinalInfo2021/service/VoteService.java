@@ -1,31 +1,45 @@
 package com.ivanlfall.ProyectoFinalInfo2021.service;
 
+import com.ivanlfall.ProyectoFinalInfo2021.dto.VoteDto;
+import com.ivanlfall.ProyectoFinalInfo2021.entity.Entrepreneurship;
 import com.ivanlfall.ProyectoFinalInfo2021.entity.User;
 import com.ivanlfall.ProyectoFinalInfo2021.entity.Vote;
+import com.ivanlfall.ProyectoFinalInfo2021.entity.mapper.VoteMapper;
+import com.ivanlfall.ProyectoFinalInfo2021.repository.EntrepreneurshipRepository;
+import com.ivanlfall.ProyectoFinalInfo2021.repository.UserRepository;
 import com.ivanlfall.ProyectoFinalInfo2021.repository.VoteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VoteService {
 
-    private VoteRepository repository;
+    private final VoteRepository voteRepository;
+    private final EntrepreneurshipRepository entrepreneurshipRepository;
+    private final UserRepository userRepository;
 
-    public VoteService(VoteRepository repository) {
-        this.repository = repository;
+    public VoteService(VoteRepository voteRepository, EntrepreneurshipRepository entrepreneurshipRepository, UserRepository userRepository) {
+        this.voteRepository = voteRepository;
+        this.entrepreneurshipRepository = entrepreneurshipRepository;
+        this.userRepository = userRepository;
     }
 
-    public List<Vote> getAll(){
-        return repository.findAll();
+    public Vote generate(Long userId, Long entrepreneurshipId, VoteDto voteDto){
+        Vote vote = VoteMapper.mapToModel(voteDto);
+        Entrepreneurship entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId).get();
+        User user = userRepository.findById(userId).get();
+        vote.setEntrepreneurship(entrepreneurship);
+        vote.setUser(user);
+
+        return voteRepository.save(vote);
     }
-    public Vote getVoteById(Long id){
-        return repository.findById(id).get();
-    }
-    public Vote save(Vote vote){
-        return repository.save(vote);
-    }
-    public void delete(Vote vote){
-        repository.delete(vote);
+    public List<Vote> getAllByUser(Long userId){
+        User user = userRepository.findById(userId).get();
+        List<Vote> votes = voteRepository.findAll().stream()
+                .filter(vote -> vote.getUser().equals(user))
+                .collect(Collectors.toList());
+        return votes;
     }
 }

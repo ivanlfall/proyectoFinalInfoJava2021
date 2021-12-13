@@ -1,5 +1,7 @@
 package com.ivanlfall.ProyectoFinalInfo2021.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -12,16 +14,11 @@ public class Vote {
     private String generatedBy;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Entrepreneurship entrepreneurship;
     private LocalDate dischargeDate = LocalDate.now();
-    private String observation;
 
     public Vote() {
-    }
-
-    public Vote(String generatedBy, User user, String observation) {
-        this.generatedBy = generatedBy;
-        this.user = user;
-        this.observation = observation;
     }
 
     public Long getId() {
@@ -56,14 +53,13 @@ public class Vote {
         this.dischargeDate = dischargeDate;
     }
 
-    public String getObservation() {
-        return observation;
+    public Entrepreneurship getEntrepreneurship() {
+        return entrepreneurship;
     }
 
-    public void setObservation(String observation) {
-        this.observation = observation;
+    public void setEntrepreneurship(Entrepreneurship entrepreneurship) {
+        this.entrepreneurship = entrepreneurship;
     }
-
 
     @Override
     public String toString() {
@@ -72,7 +68,6 @@ public class Vote {
                 ", generatedBy='" + generatedBy + '\'' +
                 ", user=" + user +
                 ", dischargeDate=" + dischargeDate +
-                ", observation='" + observation + '\'' +
                 '}';
     }
 }
