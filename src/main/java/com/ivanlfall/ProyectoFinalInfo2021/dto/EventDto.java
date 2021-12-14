@@ -1,15 +1,21 @@
 package com.ivanlfall.ProyectoFinalInfo2021.dto;
 
 import com.ivanlfall.ProyectoFinalInfo2021.util.StateType;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 
 public class EventDto {
 
     private Long id;
+    @NotBlank
     private String details;
     private LocalDate closeDate;
+    @NotNull
     private StateType state;
+    @NotNull
     private Double prize;
 
     public EventDto() {

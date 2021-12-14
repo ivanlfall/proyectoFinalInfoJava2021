@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
         User user = service.getUserById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id "+ id + " not found"));
         return new ResponseEntity(user, HttpStatus.OK);
     }
     @GetMapping("/city")
@@ -58,7 +58,7 @@ public class UserController {
            return new ResponseEntity("Data not match", HttpStatus.BAD_REQUEST);
         }
         User userDB = service.getUserById(id)
-                .orElseThrow(()-> new EntityNotFoundException("User not found"));
+                .orElseThrow(()-> new EntityNotFoundException("User with id "+ id + " not found"));
         userDB.setName(userDto.getName());
         userDB.setLastName(userDB.getLastName());
         userDB.setEmail(userDto.getEmail());
@@ -73,7 +73,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         User user = service.getUserById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id "+ id + " not found"));
         service.delete(user);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

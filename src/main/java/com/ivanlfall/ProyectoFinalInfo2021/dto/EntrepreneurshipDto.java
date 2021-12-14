@@ -1,14 +1,24 @@
 package com.ivanlfall.ProyectoFinalInfo2021.dto;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class EntrepreneurshipDto {
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
+    @Size(min = 20, max = 200)
     private String description;
+    @NotBlank
     private String content;
+    @NotNull
     private Double target;
+    @NotNull
     private boolean published;
     private List<String> urls;
     private List<String> tags;

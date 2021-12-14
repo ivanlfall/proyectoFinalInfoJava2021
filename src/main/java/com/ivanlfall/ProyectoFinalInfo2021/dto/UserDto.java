@@ -2,16 +2,26 @@ package com.ivanlfall.ProyectoFinalInfo2021.dto;
 
 import com.ivanlfall.ProyectoFinalInfo2021.util.UserType;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserDto {
 
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String lastName;
+    @NotBlank
     private String email;
+    @NotBlank
+    @Size(min = 8, max = 16)
     private String password;
     private String city;
     private String province;
     private String country;
+    @NotNull
     private UserType userType;
 
     public UserDto() {
