@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +26,8 @@ public class UserService {
                 .map(user -> UserVMMapper.mapToModel(user))
                 .collect(Collectors.toList());
     }
-    public User getUserById(Long id){
-        return repository.findById(id).get();
+    public Optional<User> getUserById(Long id){
+        return repository.findById(id);
     }
     public List<UserVM> getAllByCity(String city){
         if (city.equals("")){

@@ -11,6 +11,7 @@ public class EntrepreneurshipMapper {
         entrepreneurship.setContent(dto.getContent());
         entrepreneurship.setTarget(dto.getTarget());
         entrepreneurship.setPublished(dto.isPublished());
+        entrepreneurship.setUrl(dto.getUrls());
         entrepreneurship.setTags(dto.getTags());
         return entrepreneurship;
     }

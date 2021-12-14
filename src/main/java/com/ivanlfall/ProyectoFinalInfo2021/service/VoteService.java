@@ -10,6 +10,7 @@ import com.ivanlfall.ProyectoFinalInfo2021.repository.UserRepository;
 import com.ivanlfall.ProyectoFinalInfo2021.repository.VoteRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,15 +29,18 @@ public class VoteService {
 
     public Vote generate(Long userId, Long entrepreneurshipId, VoteDto voteDto){
         Vote vote = VoteMapper.mapToModel(voteDto);
-        Entrepreneurship entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId).get();
-        User user = userRepository.findById(userId).get();
+        Entrepreneurship entrepreneurship = entrepreneurshipRepository.findById(entrepreneurshipId)
+                .orElseThrow(() -> new EntityNotFoundException("Entrepreneurship not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         vote.setEntrepreneurship(entrepreneurship);
         vote.setUser(user);
 
         return voteRepository.save(vote);
     }
     public List<Vote> getAllByUser(Long userId){
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<Vote> votes = voteRepository.findAll().stream()
                 .filter(vote -> vote.getUser().equals(user))
                 .collect(Collectors.toList());

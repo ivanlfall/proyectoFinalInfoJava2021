@@ -5,6 +5,7 @@ import com.ivanlfall.ProyectoFinalInfo2021.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -17,8 +18,8 @@ public class EventService {
     public List<Event> getAll(){
         return repository.findAll();
     }
-    public Event getEventById(Long id){
-        return repository.findById(id).get();
+    public Optional<Event> getEventById(Long id){
+        return repository.findById(id);
     }
     public Event save(Event event){
         return repository.save(event);

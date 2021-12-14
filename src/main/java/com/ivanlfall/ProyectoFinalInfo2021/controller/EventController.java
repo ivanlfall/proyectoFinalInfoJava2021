@@ -30,7 +30,8 @@ public class EventController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        Event event = service.getEventById(id);
+        Event event = service.getEventById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found"));
         return new ResponseEntity(event, HttpStatus.OK);
     }
     @PostMapping
@@ -39,17 +40,25 @@ public class EventController {
         return new ResponseEntity(service.save(event), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Event event){
-        if (id != event.getId()){
-            new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody EventDto eventDto){
+        if (id != eventDto.getId()){
+            return new ResponseEntity("Data not match", HttpStatus.BAD_REQUEST);
         }
+        Event eventDB = service.getEventById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Event not found"));
+        eventDB.setDetails(eventDto.getDetails());
+        eventDB.setCloseDate(eventDto.getCloseDate());
+        eventDB.setState(eventDto.getState());
+        eventDB.setPrize(eventDto.getPrize());
 
-        return new ResponseEntity(service.save(event), HttpStatus.NO_CONTENT);
+        return new ResponseEntity(service.save(eventDB), HttpStatus.NO_CONTENT);
     }
     @PutMapping("/{id}/newSubscriber/{idSubscriber}")
     public ResponseEntity<?> addSubscriber(@PathVariable Long id, @PathVariable Long idSubscriber){
-        Event event = service.getEventById(id);
-        Entrepreneurship entrepreneurship = entrepreneurshipService.getEntrepreneurshipById(idSubscriber);
+        Event event = service.getEventById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found"));
+        Entrepreneurship entrepreneurship = entrepreneurshipService.getEntrepreneurshipById(idSubscriber)
+                .orElseThrow(() -> new EntityNotFoundException("Entrepreneurship not found"));
         entrepreneurship.setEvent(event);
         if (event == null || entrepreneurship == null){
             throw new EntityNotFoundException("Event or Entrepreneurship not found");
@@ -60,7 +69,8 @@ public class EventController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        Event event = service.getEventById(id);
+        Event event = service.getEventById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found"));
         service.delete(event);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

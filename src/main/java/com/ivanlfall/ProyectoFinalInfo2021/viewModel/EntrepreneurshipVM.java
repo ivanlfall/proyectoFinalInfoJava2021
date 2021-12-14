@@ -13,9 +13,10 @@ public class EntrepreneurshipVM {
     private String content;
     private LocalDate dischargeDate;
     private Double target;
-    private List<String> url;
+    private List<String> urls;
     private List<String> tags;
     private String event;
+    private Integer votes;
 
     public EntrepreneurshipVM() {
     }
@@ -68,14 +69,6 @@ public class EntrepreneurshipVM {
         this.target = target;
     }
 
-    public List<String> getUrl() {
-        return url;
-    }
-
-    public void setUrl(List<String> url) {
-        this.url = url;
-    }
-
     public List<String> getTags() {
         return tags;
     }
@@ -92,5 +85,19 @@ public class EntrepreneurshipVM {
         this.event = event;
     }
 
+    public List<String> getUrls() {
+        return urls;
+    }
 
+    public void setUrls(List<String> urls) {
+        this.urls = urls;
+    }
+
+    public Integer getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Integer votes) {
+        this.votes = votes;
+    }
 }

@@ -27,7 +27,8 @@ public class EntrepreneurshipController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        Entrepreneurship entrepreneurship = service.getEntrepreneurshipById(id);
+        Entrepreneurship entrepreneurship = service.getEntrepreneurshipById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entrepreneurship not found"));;
         if (entrepreneurship == null){
             throw new EntityNotFoundException("Entrepreneurship not found");
         }
@@ -47,16 +48,27 @@ public class EntrepreneurshipController {
         return new ResponseEntity(service.save(entrepreneurship), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Entrepreneurship entrepreneurship){
-        if (id != entrepreneurship.getId()){
-            new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody EntrepreneurshipDto entrepreneurshipDto){
+        if (id != entrepreneurshipDto.getId()){
+            return new ResponseEntity("Data not match", HttpStatus.BAD_REQUEST);
         }
+        Entrepreneurship entrepreneurshipDB = service.getEntrepreneurshipById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entrepreneurship not found"));
 
-        return new ResponseEntity(service.save(entrepreneurship), HttpStatus.NO_CONTENT);
+        entrepreneurshipDB.setName(entrepreneurshipDto.getName());
+        entrepreneurshipDB.setDescription(entrepreneurshipDto.getDescription());
+        entrepreneurshipDB.setContent(entrepreneurshipDto.getContent());
+        entrepreneurshipDB.setTarget(entrepreneurshipDto.getTarget());
+        entrepreneurshipDB.setPublished(entrepreneurshipDto.isPublished());
+        entrepreneurshipDB.setUrl(entrepreneurshipDto.getUrls());
+        entrepreneurshipDB.setTags(entrepreneurshipDto.getTags());
+
+        return new ResponseEntity(service.save(entrepreneurshipDB), HttpStatus.NO_CONTENT);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        Entrepreneurship entrepreneurship = service.getEntrepreneurshipById(id);
+        Entrepreneurship entrepreneurship = service.getEntrepreneurshipById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entrepreneurship not found"));;
         service.delete(entrepreneurship);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
 @RestController
@@ -28,7 +29,8 @@ public class UserController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        User user = service.getUserById(id);
+        User user = service.getUserById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return new ResponseEntity(user, HttpStatus.OK);
     }
     @GetMapping("/city")
@@ -51,16 +53,27 @@ public class UserController {
         return new ResponseEntity(service.save(user), HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User user){
-        if (id != user.getId()){
-            new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UserDto userDto){
+        if (id != userDto.getId()){
+           return new ResponseEntity("Data not match", HttpStatus.BAD_REQUEST);
         }
+        User userDB = service.getUserById(id)
+                .orElseThrow(()-> new EntityNotFoundException("User not found"));
+        userDB.setName(userDto.getName());
+        userDB.setLastName(userDB.getLastName());
+        userDB.setEmail(userDto.getEmail());
+        userDB.setPassword(userDto.getPassword());
+        userDB.setCity(userDto.getCity());
+        userDB.setProvince(userDto.getProvince());
+        userDB.setCountry(userDto.getCountry());
+        userDB.setUserType(userDto.getUserType());
 
-        return new ResponseEntity(service.save(user), HttpStatus.NO_CONTENT);
+        return new ResponseEntity(service.save(userDB), HttpStatus.NO_CONTENT);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        User user = service.getUserById(id);
+        User user = service.getUserById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         service.delete(user);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

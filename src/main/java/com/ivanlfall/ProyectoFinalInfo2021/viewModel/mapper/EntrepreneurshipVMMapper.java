@@ -12,13 +12,14 @@ public class EntrepreneurshipVMMapper {
         entrepreneurshipVM.setContent(entrepreneurship.getContent());
         entrepreneurshipVM.setDischargeDate(entrepreneurship.getDischargeDate());
         entrepreneurshipVM.setTarget(entrepreneurship.getTarget());
-        entrepreneurshipVM.setUrl(entrepreneurship.getUrl());
+        entrepreneurshipVM.setUrls(entrepreneurship.getUrl());
         entrepreneurshipVM.setTags(entrepreneurship.getTags());
         if (entrepreneurship.getEvent() == null){
             entrepreneurshipVM.setEvent("No event");
         }else{
             entrepreneurshipVM.setEvent(entrepreneurship.getEvent().getDetails());
         }
+        entrepreneurshipVM.setVotes(entrepreneurship.getVotes().size());
 
         return entrepreneurshipVM;
     }

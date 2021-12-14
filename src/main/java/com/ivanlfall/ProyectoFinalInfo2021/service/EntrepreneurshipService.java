@@ -7,6 +7,7 @@ import com.ivanlfall.ProyectoFinalInfo2021.viewModel.mapper.EntrepreneurshipVMMa
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -26,8 +27,8 @@ public class EntrepreneurshipService {
                 .map(entrepreneurship -> EntrepreneurshipVMMapper.mapToModel(entrepreneurship))
                 .collect(Collectors.toList());
     }
-    public Entrepreneurship getEntrepreneurshipById(Long id){
-        return repository.findById(id).get();
+    public Optional<Entrepreneurship> getEntrepreneurshipById(Long id){
+        return repository.findById(id);
     }
     public List<EntrepreneurshipVM> getAllByTag(String tag){
         return repository.findAll()
