@@ -5,6 +5,7 @@ import com.ivanlfall.ProyectoFinalInfo2021.entity.Event;
 import com.ivanlfall.ProyectoFinalInfo2021.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,8 @@ public class EventService {
         return repository.findAll();
     }
     public Optional<Event> getEventById(Long id){
-        Event event = repository.findById(id).get();
+        Event event = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event with id "+ id + " not found"));
         Collections.sort(event.getSubscribers(),
                 (e1, e2) -> ((Integer)e1.getVotes().size()).compareTo(e2.getVotes().size()));
         Collections.reverse(event.getSubscribers());

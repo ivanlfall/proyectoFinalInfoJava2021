@@ -31,8 +31,7 @@ public class EventController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        Event event = service.getEventById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Event with id "+ id + " not found"));
+        Event event = service.getEventById(id).get();
         return new ResponseEntity(event, HttpStatus.OK);
     }
     @PostMapping
