@@ -66,7 +66,7 @@ public class UserController {
         User userDB = service.getUserById(id)
                 .orElseThrow(()-> new EntityNotFoundException("User with id "+ id + " not found"));
         userDB.setName(userDto.getName());
-        userDB.setLastName(userDB.getLastName());
+        userDB.setLastName(userDto.getLastName());
         userDB.setEmail(userDto.getEmail());
         userDB.setPassword(userDto.getPassword());
         userDB.setCity(userDto.getCity());

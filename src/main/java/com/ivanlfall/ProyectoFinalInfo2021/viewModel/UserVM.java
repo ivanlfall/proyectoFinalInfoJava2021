@@ -20,7 +20,7 @@ public class UserVM {
     private String province;
     private String country;
     private UserType userType;
-    private List<Vote> vote;
+    private List<VoteVM> vote;
 
     public UserVM() {
     }
@@ -105,11 +105,11 @@ public class UserVM {
         this.userType = userType;
     }
 
-    public List<Vote> getVote() {
+    public List<VoteVM> getVote() {
         return vote;
     }
 
-    public void setVote(List<Vote> vote) {
+    public void setVote(List<VoteVM> vote) {
         this.vote = vote;
     }
 }

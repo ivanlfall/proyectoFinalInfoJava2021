@@ -8,6 +8,8 @@ import com.ivanlfall.ProyectoFinalInfo2021.entity.mapper.VoteMapper;
 import com.ivanlfall.ProyectoFinalInfo2021.repository.EntrepreneurshipRepository;
 import com.ivanlfall.ProyectoFinalInfo2021.repository.UserRepository;
 import com.ivanlfall.ProyectoFinalInfo2021.repository.VoteRepository;
+import com.ivanlfall.ProyectoFinalInfo2021.viewModel.VoteVM;
+import com.ivanlfall.ProyectoFinalInfo2021.viewModel.mapper.VoteVMMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,11 +40,12 @@ public class VoteService {
 
         return voteRepository.save(vote);
     }
-    public List<Vote> getAllByUser(Long userId){
+    public List<VoteVM> getAllByUser(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        List<Vote> votes = voteRepository.findAll().stream()
+        List<VoteVM> votes = voteRepository.findAll().stream()
                 .filter(vote -> vote.getUser().equals(user))
+                .map(vote -> VoteVMMapper.mapToModel(vote))
                 .collect(Collectors.toList());
         return votes;
     }

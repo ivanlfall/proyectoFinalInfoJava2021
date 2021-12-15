@@ -3,6 +3,8 @@ package com.ivanlfall.ProyectoFinalInfo2021.viewModel.mapper;
 import com.ivanlfall.ProyectoFinalInfo2021.entity.User;
 import com.ivanlfall.ProyectoFinalInfo2021.viewModel.UserVM;
 
+import java.util.stream.Collectors;
+
 public class UserVMMapper {
 
     public static UserVM mapToModel(User user){
@@ -17,7 +19,9 @@ public class UserVMMapper {
         userVM.setProvince(user.getProvince());
         userVM.setCountry(user.getCountry());
         userVM.setUserType(user.getUserType());
-        userVM.setVote(user.getVote());
+        userVM.setVote(user.getVote().stream()
+                .map(vote -> VoteVMMapper.mapToModel(vote))
+                .collect(Collectors.toList()));
         return userVM;
     }
 
