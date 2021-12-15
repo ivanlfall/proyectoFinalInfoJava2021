@@ -1,6 +1,4 @@
-package com.ivanlfall.ProyectoFinalInfo2021.util;
-
-import org.springframework.http.HttpStatus;
+package com.ivanlfall.ProyectoFinalInfo2021.exception;
 
 import java.util.ArrayList;
 import java.util.List;

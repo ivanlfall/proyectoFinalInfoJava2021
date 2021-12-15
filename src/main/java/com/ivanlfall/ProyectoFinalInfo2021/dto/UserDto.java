@@ -2,6 +2,9 @@ package com.ivanlfall.ProyectoFinalInfo2021.dto;
 
 import com.ivanlfall.ProyectoFinalInfo2021.util.UserType;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +17,7 @@ public class UserDto {
     @NotBlank
     private String lastName;
     @NotBlank
+    @Email(message = "Please provide a valid email address")
     private String email;
     @NotBlank
     @Size(min = 8, max = 16)

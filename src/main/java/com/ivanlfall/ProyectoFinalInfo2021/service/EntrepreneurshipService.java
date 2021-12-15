@@ -31,9 +31,13 @@ public class EntrepreneurshipService {
         return repository.findById(id);
     }
     public List<EntrepreneurshipVM> getAllByTag(String tag){
+        String regex = ".*"+tag.toLowerCase()+".*";
+        Pattern pat = Pattern.compile(regex);
+
         return repository.findAll()
                 .stream()
-                .filter(e -> e.getTags().contains(tag))
+                .filter(e -> e.getTags().stream()
+                        .anyMatch(t -> pat.matcher(t.toLowerCase()).matches()))
                 .map(e -> EntrepreneurshipVMMapper.mapToModel(e))
                 .collect(Collectors.toList());
     }
